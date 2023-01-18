@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 
 function App() {
   const [file, setFile] = useState();
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState();
+  const [images, setImages] = useState();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function getImages() {
+      const result = await axios.get("/api/images");
+      setImages(result.data);
+    }
+    getImages();
+  }, []);
 
   const submit = async (event) => {
     event.preventDefault();
@@ -14,10 +23,14 @@ function App() {
     formData.append("image", file);
     formData.append("description", description);
 
-    const result = await axios.post("/api/images", formData, {
+    setLoading(true);
+    await axios.post("/api/images", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    setImage(result.data.imagePath);
+    setLoading(false);
+
+    const result = await axios.get("/api/images");
+    setImages(result.data);
   };
 
   return (
@@ -27,7 +40,7 @@ function App() {
           filename={file}
           onChange={(e) => setFile(e.target.files[0])}
           type="file"
-          accept="image/*"
+          accept="image/"
         ></input>
         <input
           onChange={(e) => setDescription(e.target.value)}
@@ -35,7 +48,20 @@ function App() {
         ></input>
         <button type="submit">Submit</button>
       </form>
-      {image && <img src={image} />}
+
+      <div>{loading ? <h1>Loading images...</h1> : ""}</div>
+
+      <div className="img-list">
+        {images ? (
+          images.map((x) => (
+            <div key={x.id} className="img-item">
+              <img src={`/api/${x.file_path}`} alt={`${x.description}`} />
+            </div>
+          ))
+        ) : (
+          <>Loading images...</>
+        )}
+      </div>
     </div>
   );
 }
