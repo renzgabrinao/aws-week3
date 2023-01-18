@@ -36,7 +36,7 @@ exports.getImage = getImage;
 
 async function addImage(filePath, description) {
   let query = `
-  INSERT INTO images (file_path, description)
+  INSERT INTO images (file_name, description)
   VALUES(?, ?)
   `;
 
