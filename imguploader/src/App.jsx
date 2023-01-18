@@ -33,6 +33,8 @@ function App() {
     setImages(result.data);
   };
 
+  console.log(images);
+
   return (
     <div className="App">
       <form onSubmit={submit}>
@@ -55,7 +57,7 @@ function App() {
         {images ? (
           images.map((x) => (
             <div key={x.id} className="img-item">
-              <img src={`/api/${x.file_path}`} alt={`${x.description}`} />
+              <img src={`/api/${x.file_name}`} alt={`${x.description}`} />
             </div>
           ))
         ) : (
