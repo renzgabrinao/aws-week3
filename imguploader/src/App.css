@@ -18,7 +18,8 @@
   margin-top: 30px;
   display: inline-flex;
   flex-flow: row wrap;
-  gap: 16px;
+  justify-content: space-evenly;
+  row-gap: 40px;
 }
 
 .img-item {
