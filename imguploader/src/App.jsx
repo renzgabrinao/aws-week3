@@ -37,6 +37,7 @@ function App() {
 
   return (
     <div className="App">
+      <h1>Upload a picture!</h1>
       <form onSubmit={submit}>
         <input
           filename={file}
@@ -47,6 +48,7 @@ function App() {
         <input
           onChange={(e) => setDescription(e.target.value)}
           type="text"
+          placeholder="Name of picture"
         ></input>
         <button type="submit">Submit</button>
       </form>
