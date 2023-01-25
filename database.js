@@ -1,4 +1,4 @@
-const mysql = require("mysql2");
+import mysql from "mysql2";
 
 const pool = mysql
   .createPool({
@@ -9,7 +9,7 @@ const pool = mysql
   })
   .promise();
 
-async function getImages() {
+export async function getImages() {
   let query = `
   SELECT * 
   FROM images
@@ -19,9 +19,8 @@ async function getImages() {
   const [rows] = await pool.query(query);
   return rows;
 }
-exports.getImages = getImages;
 
-async function getImage(id) {
+export async function getImage(id) {
   let query = `
   SELECT * 
   FROM images
@@ -32,9 +31,8 @@ async function getImage(id) {
   const result = rows[0];
   return result;
 }
-exports.getImage = getImage;
 
-async function addImage(filePath, description) {
+export async function addImage(filePath, description) {
   let query = `
   INSERT INTO images (file_name, description)
   VALUES(?, ?)
@@ -45,4 +43,15 @@ async function addImage(filePath, description) {
 
   return await getImage(id);
 }
-exports.addImage = addImage;
+
+export async function deleteImage(id) {
+  let query = `
+    DELETE
+    FROM images
+    WHERE file_name = ?
+  `;
+
+  const [rows] = await pool.query(query, [id]);
+  const result = rows[0];
+  return result;
+}

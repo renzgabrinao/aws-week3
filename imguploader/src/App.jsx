@@ -31,14 +31,24 @@ function App() {
 
     const result = await axios.get("/api/images");
     setImages(result.data);
+    document.getElementById('form').reset(); 
   };
+  
+  const deleteImage = async (image) => {
+    console.log(image)
 
-  console.log(images);
+    setLoading(true);
+    await axios.post("/api/images/delete", image);
+    setLoading(false);
+
+    const result = await axios.get("/api/images");
+    setImages(result.data);
+  }
 
   return (
     <div className="App">
       <h1>Upload a picture!</h1>
-      <form onSubmit={submit}>
+      <form id='form' onSubmit={submit}>
         <input
           filename={file}
           onChange={(e) => setFile(e.target.files[0])}
@@ -50,7 +60,7 @@ function App() {
           type="text"
           placeholder="Name of picture"
         ></input>
-        <button type="submit">Submit</button>
+        <button className="submit-btn" type="submit">Submit</button>
       </form>
 
       <div>{loading ? <h1>Loading images...</h1> : ""}</div>
@@ -59,7 +69,9 @@ function App() {
         {images ? (
           images.map((x) => (
             <div key={x.id} className="img-item">
-              <img src={`/api/${x.file_name}`} alt={`${x.description}`} />
+              <img src={x.imageURL} alt={`${x.description}`} />
+              <p>{x.description}</p>
+              <button className="delete-btn" onClick={() => deleteImage(x)}>Delete</button>
             </div>
           ))
         ) : (
