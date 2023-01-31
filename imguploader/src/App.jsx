@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 
+const dateFormat = new Intl.DateTimeFormat('en-US', {
+  dateStyle: "short"
+})
+
+
 function App() {
   const [file, setFile] = useState();
   const [description, setDescription] = useState("");
@@ -43,6 +48,7 @@ function App() {
 
     const result = await axios.get("/api/images");
     setImages(result.data);
+
   }
 
   return (
@@ -70,7 +76,9 @@ function App() {
           images.map((x) => (
             <div key={x.id} className="img-item">
               <img src={x.imageURL} alt={`${x.description}`} />
-              <p>{x.description}</p>
+              <h2>{x.description}</h2>
+              <p>Posted: {dateFormat.format(new Date(x.created))}</p>
+
               <button className="delete-btn" onClick={() => deleteImage(x)}>Delete</button>
             </div>
           ))

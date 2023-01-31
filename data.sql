@@ -3,7 +3,7 @@ CREATE DATABASE image_app;
 USE image_app;
 
 DROP USER IF EXISTS 'image_app_user'@'localhost';
-CREATE USER 'image_app_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'MyPassword1!';
+CREATE USER 'image_app_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'MyNewPass1!';
 GRANT ALL PRIVILEGES ON image_app.* TO 'image_app_user'@'localhost';
 
 DROP TABLE IF EXISTS images;
